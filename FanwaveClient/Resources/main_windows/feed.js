@@ -9,8 +9,12 @@ Ti.include("../cell_views/feed_cell_view.js");
 Ti.include("../cell_views/more_cell_view.js");
 
 
-// feed array
+// variables
 //
+var moreNewsFeed = false;
+var moreFriendFeed = false;
+var moreFollowFeed = false;
+
 var newsFeeds = [];
 var friendFeeds = [];
 var followFeeds = [];
@@ -54,28 +58,28 @@ function didSelectedAtIndex(index)
 	switch (feedtb.index)
 	{
 		case 0:
-			if (index == newsFeeds.length-1 && feedManager.moreNewsFeed)
+			if (index == newsFeeds.length && moreNewsFeed)
 			{
-				newsFeeds[index] = createLoadingMoreCell();
-				feedtv.setData(newsFeeds);
+				feedtv.appendRow(createLoadingMoreCell());
+				feedtv.deleteRow(index);
 				feedManager.getMoreNewsFeed(newsFeeds[index-1]);
 			}
 			break;
 			
 		case 1:
-			if (index == friendFeeds.length-1 && feedManager.moreFriendFeed)
+			if (index == friendFeeds.length && moreFriendFeed)
 			{
-				friendFeeds[index] = createLoadingMoreCell();
-				feedtv.setData(friendFeeds);
+				feedtv.appendRow(createLoadingMoreCell());
+				feedtv.deleteRow(index);
 				feedManager.getMoreFriendFeed(friendFeeds[index-1]);
 			}
 			break;
 			
 		case 2:
-			if (index == followFeeds.length-1 && feedManager.moreFollowFeed)
+			if (index == followFeeds.length && moreFollowFeed)
 			{
-				followFeeds[index] = createLoadingMoreCell();
-				feedtv.setData(followFeeds);
+				feedtv.appendRow(createLoadingMoreCell());
+				feedtv.deleteRow(index);
 				feedManager.getMoreFollowFeed(username, friendFeeds[index-1]);
 			}
 			break;
@@ -105,48 +109,109 @@ win.add(feedtv);
 Ti.App.addEventListener('didGetNewsFeed', function(e)
 {
 	Ti.API.info('didGetNewsFeed');
-	newsFeeds = [];
+	newsFeeds = e.data;
+	var rows = [];
 	
-	for (var i in e.data)
+	for (var i in newsFeeds)
 	{
-		var feed = e.data[i];
+		var feed = newsFeeds[i];
 		
 		switch (feed.activity)
 		{
 			case 'checkin':
-				newsFeeds.push(createWaveInCell(feed));
+				rows.push(createWaveInCell(feed));
 				break;
 			
 			case 'comment':
-				newsFeeds.push(createCommentCell(feed));
+				rows.push(createCommentCell(feed));
 				break;
 			
 			case 'like':
-				newsFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'dislike':
-				newsFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'reminder':
-				newsFeeds.push(createSetReminderCell(feed));
+				rows.push(createSetReminderCell(feed));
 				break;
 				
 			case 'badge':	
-				newsFeeds.push(createGainBadgeCell(feed));
+				rows.push(createGainBadgeCell(feed));
+				break;
+				
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
 				break;
 			
 			default:
-				Ti.API.info('default');	
+				Ti.API.info('undefined feed type');	
 				break;
 		}
 	}
 	
-	if (feedManager.moreNewsFeed)
-		newsFeeds.push(createMoreCell());
+	moreNewsFeed = e.more;
 	
-	feedtv.setData(newsFeeds);
+	if (moreNewsFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
+});
+
+Ti.App.addEventListener('didGetMoreNewsFeed', function(e)
+{
+	Ti.API.info('didGetMoreNewsFeed');
+	newsFeeds = newsFeeds.concat(e.data);
+	var rows = [];
+
+	for (var i in newsFeeds)
+	{
+		var feed = newsFeeds[i];
+		
+		switch (feed.activity)
+		{
+			case 'checkin':
+				rows.push(createWaveInCell(feed));
+				break;
+			
+			case 'comment':
+				rows.push(createCommentCell(feed));
+				break;
+			
+			case 'like':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'dislike':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'reminder':
+				rows.push(createSetReminderCell(feed));
+				break;
+				
+			case 'badge':	
+				rows.push(createGainBadgeCell(feed));
+				break;
+			
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
+				break;
+			
+			default:
+				Ti.API.info('undefined feed type:' + feed);	
+				break;
+		}
+	}
+	
+	moreNewsFeed = e.more;
+	
+	if (moreNewsFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
 });
 
 
@@ -155,48 +220,109 @@ Ti.App.addEventListener('didGetNewsFeed', function(e)
 Ti.App.addEventListener('didGetFriendFeed', function(e)
 {
 	Ti.API.info('didGetFriendFeed');
-	friendFeeds = [];
+	friendFeeds = e.data;
+	var rows = [];
 	
-	for (var i in e.data)
+	for (var i in friendFeeds)
 	{
-		var feed = e.data[i];
+		var feed = friendFeeds[i];
 		
 		switch (feed.activity)
 		{
 			case 'checkin':
-				friendFeeds.push(createWaveInCell(feed));
+				rows.push(createWaveInCell(feed));
 				break;
 			
 			case 'comment':
-				friendFeeds.push(createCommentCell(feed));
+				rows.push(createCommentCell(feed));
 				break;
 			
 			case 'like':
-				friendFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'dislike':
-				friendFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'reminder':
-				friendFeeds.push(createSetReminderCell(feed));
+				rows.push(createSetReminderCell(feed));
 				break;
 				
 			case 'badge':	
-				friendFeeds.push(createGainBadgeCell(feed));
+				rows.push(createGainBadgeCell(feed));
+				break;
+			
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
 				break;
 			
 			default:
-				Ti.API.info('default');	
+				Ti.API.info('undefined feed type');	
 				break;
 		}
 	}
 	
-	if (feedManager.moreFriendFeed)
-		friendFeeds.push(createMoreCell());
+	moreFriendFeed = e.more;
 	
-	feedtv.setData(friendFeeds);
+	if (moreFriendFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
+});
+
+Ti.App.addEventListener('didGetMoreFriendFeed', function(e)
+{
+	Ti.API.info('didGetMoreFriendFeed');
+	friendFeeds = friendFeeds.concat(e.data);
+	var rows = [];
+	
+	for (var i in friendFeeds)
+	{
+		var feed = friendFeeds[i];
+		
+		switch (feed.activity)
+		{
+			case 'checkin':
+				rows.push(createWaveInCell(feed));
+				break;
+			
+			case 'comment':
+				rows.push(createCommentCell(feed));
+				break;
+			
+			case 'like':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'dislike':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'reminder':
+				rows.push(createSetReminderCell(feed));
+				break;
+				
+			case 'badge':	
+				rows.push(createGainBadgeCell(feed));
+				break;
+			
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
+				break;
+			
+			default:
+				Ti.API.info('undefined feed type');	
+				break;
+		}
+	}
+	
+	moreFriendFeed = e.more;
+	
+	if (moreFriendFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
 });
 
 
@@ -205,48 +331,109 @@ Ti.App.addEventListener('didGetFriendFeed', function(e)
 Ti.App.addEventListener('didGetFollowFeed', function(e)
 {
 	Ti.API.info('didGetFollowFeed');
-	followFeeds = [];
+	followFeeds = e.data;
+	var rows = [];
 	
-	for (var i in e.data)
+	for (var i in followFeeds)
 	{
-		var feed = e.data[i];
+		var feed = followFeeds[i];
 		
 		switch (feed.activity)
 		{
 			case 'checkin':
-				friendFeeds.push(createWaveInCell(feed));
+				rows.push(createWaveInCell(feed));
 				break;
 			
 			case 'comment':
-				followFeeds.push(createCommentCell(feed));
+				rows.push(createCommentCell(feed));
 				break;
 			
 			case 'like':
-				followFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'dislike':
-				followFeeds.push(createCommentRatingCell(feed));
+				rows.push(createCommentRatingCell(feed));
 				break;
 				
 			case 'reminder':
-				followFeeds.push(createSetReminderCell(feed));
+				rows.push(createSetReminderCell(feed));
 				break;
 				
 			case 'badge':
-				followFeeds.push(createGainBadgeCell(feed));
+				rows.push(createGainBadgeCell(feed));
+				break;
+			
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
 				break;
 			
 			default:
-				Ti.API.info('default');	
+				Ti.API.info('undefined feed type');	
 				break;
 		}
 	}
 	
-	if (feedManager.moreFollowFeed)
-		followFeeds.push(createMoreCell());
+	moreFollowFeed = e.more;
 	
-	feedtv.setData(followFeeds);
+	if (moreFollowFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
+});
+
+Ti.App.addEventListener('didGetMoreFollowFeed', function(e)
+{
+	Ti.API.info('didGetMoreFollowFeed');
+	followFeeds = followFeeds.concat(e.data);
+	var rows = [];
+	
+	for (var i in followFeeds)
+	{
+		var feed = followFeeds[i];
+		
+		switch (feed.activity)
+		{
+			case 'checkin':
+				rows.push(createWaveInCell(feed));
+				break;
+			
+			case 'comment':
+				rows.push(createCommentCell(feed));
+				break;
+			
+			case 'like':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'dislike':
+				rows.push(createCommentRatingCell(feed));
+				break;
+				
+			case 'reminder':
+				rows.push(createSetReminderCell(feed));
+				break;
+				
+			case 'badge':
+				rows.push(createGainBadgeCell(feed));
+				break;
+			
+			case 'topfan':
+				rows.push(createTopFanCell(feed));
+				break;
+			
+			default:
+				Ti.API.info('undefined feed type');	
+				break;
+		}
+	}
+	
+	moreFollowFeed = e.more;
+	
+	if (moreFollowFeed)
+		rows.push(createMoreCell());
+	
+	feedtv.setData(rows);
 });
 
 feedManager.getNewsFeed();

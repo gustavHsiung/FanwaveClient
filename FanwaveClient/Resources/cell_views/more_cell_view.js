@@ -18,7 +18,7 @@ function createMoreCell ()
 		width: 'auto',
 		visible: true
 	});
-	cell.add(titlelb);
+	cell.add(morelb);
 	
 	return cell;
 };
@@ -34,6 +34,8 @@ function createLoadingMoreCell ()
 	var moreai = Ti.UI.createActivityIndicator ({
 		height: 20,
 		width: 20,
+		top: 15,
+		left: 150
 	});
 	moreai.show();
 	cell.add(moreai);

@@ -4,11 +4,7 @@ Ti.include("../constant.js");
 Ti.include("../utils/network.js");
 
 var feedManager = {
-	
-	moreNewsFeed: false,
-	moreFriendFeed: false,
-	moreFollowFeed: false,
-	
+
 	getNewsFeed: function() {
 		var c = Titanium.Network.createHTTPClient();
 		c.setTimeout(10000);
@@ -16,8 +12,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetNewsFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
 	
 		c.open('GET', baseUrl + 'feed/all/get');
@@ -32,8 +27,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetFriendFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
 	
 		c.open('GET', baseUrl + 'feed/friend/get');
@@ -48,8 +42,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetFollowFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
 	
 		c.open('POST', baseUrl + 'follow/programfeed/20/get');
@@ -64,11 +57,10 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetMoreNewsFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetMoreNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
-	
-		c.open('GET', baseUrl + 'feed/all/' + feed.feedID + '/prev');
+		Ti.API.info('feed id: ' + feed.info.uuid);
+		c.open('GET', baseUrl + 'feed/all/' + feed.info.uuid + '/prev');
 		createHeader(c);
 		c.send();
 	},
@@ -80,11 +72,10 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetMoreFriendFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetMoreFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
 	
-		c.open('GET', baseUrl + 'feed/friend/' + feed.feedID + '/prev');
+		c.open('GET', baseUrl + 'feed/friend/' + feed.info.uuid + '/prev');
 		createHeader(c);
 		c.send();
 	},
@@ -96,11 +87,10 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			moreNewsFeed = parseInt(feeds.more);
-			Ti.App.fireEvent('didGetMoreFollowFeed', {data:feeds.feeds});
+			Ti.App.fireEvent('didGetMoreFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
 		};
 	
-		c.open('POST', baseUrl + 'follow/programfeed/' + feed.feedID + '/20/next');
+		c.open('POST', baseUrl + 'follow/programfeed/' + feed.info.uuid + '/20/next');
 		createHeader(c);
 		c.send({username: follower});
 	}

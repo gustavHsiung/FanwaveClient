@@ -124,4 +124,13 @@ loginbt.addEventListener('click', function()
 loginWin.add(loginbt);
 
 
+// login listener
+//
+Ti.App.addEventListener('didLoginFanwave', function(e)
+{
+	Ti.API.info('didLoginFanwave');
+	loginWin.close();
+});
+
+
 loginWin.open();

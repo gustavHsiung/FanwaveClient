@@ -10,12 +10,12 @@ var tabGroup = Titanium.UI.createTabGroup();
 //
 var win1 = Titanium.UI.createWindow({  
 	url:'main_windows/feed.js',
-    title:'Feed',
+    title:'Waves',
     backgroundColor:'#fff',
     navBarHidden: true
 });
 var tab1 = Titanium.UI.createTab({  
-    title:'Feed',
+    title:'Waves',
     window:win1
 });
 
@@ -25,12 +25,12 @@ var tab1 = Titanium.UI.createTab({
 //
 var win2 = Titanium.UI.createWindow({  
 	url:'main_windows/friend.js',
-    title:'Friend',
+    title:'Friends',
     backgroundColor:'#fff',
     navBarHidden: true
 });
 var tab2 = Titanium.UI.createTab({  
-    title:'Friend',
+    title:'Friends',
     window:win2
 });
 

@@ -12,7 +12,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 	
 		c.open('GET', baseUrl + 'feed/all/get');
@@ -27,7 +27,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 	
 		c.open('GET', baseUrl + 'feed/friend/get');
@@ -42,7 +42,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 	
 		c.open('POST', baseUrl + 'follow/programfeed/20/get');
@@ -57,7 +57,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetMoreNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetMoreNewsFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 		Ti.API.info('feed id: ' + feed.info.uuid);
 		c.open('GET', baseUrl + 'feed/all/' + feed.info.uuid + '/prev');
@@ -72,7 +72,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetMoreFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetMoreFriendFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 	
 		c.open('GET', baseUrl + 'feed/friend/' + feed.info.uuid + '/prev');
@@ -87,7 +87,7 @@ var feedManager = {
 		c.onload = function()
 		{
 			var feeds = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didGetMoreFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more)});
+			Ti.App.fireEvent('didGetMoreFollowFeed', {data:feeds.feeds, more:parseInt(feeds.more,10)});
 		};
 	
 		c.open('POST', baseUrl + 'follow/programfeed/' + feed.info.uuid + '/20/next');

@@ -60,3 +60,6 @@ tabGroup.addTab(tab3);
 
 // open tab group
 tabGroup.open();
+
+
+Ti.include("views/login_view.js");

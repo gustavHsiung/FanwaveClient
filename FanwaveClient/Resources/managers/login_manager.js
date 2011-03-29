@@ -12,12 +12,18 @@ var loginManager = {
 	
 		c.onload = function()
 		{
-			var parsedData = JSON.parse(this.responseData);
-			Ti.App.fireEvent('didLoginFanwave', {data: parsedData});
-		};
-		c.onerror = function (e)
-		{
-			Ti.API.info(e.error);
+			switch(this.status)
+			{
+				case 200:
+					var parsedData = JSON.parse(this.responseData);
+					Ti.App.fireEvent('didLoginFanwave', {data: parsedData});
+					break;
+					
+				case 409:
+					var errorMsg = this.responseText;
+					Ti.API.info(errorMsg);
+					break;
+			}
 		};
 	
 		c.open('POST', baseUrl + 'member/user/login');

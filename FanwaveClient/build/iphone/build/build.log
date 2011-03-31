@@ -5,11 +5,7 @@ reporting an issue to help us understand your environment, build settings
 and aid in debugging. Please attach this log to any issue that you report.
 ================================================================================
 
-<<<<<<< HEAD
-Starting build at 03/30/11 19:19
-=======
-Starting build at 03/30/11 21:03
->>>>>>> 78996a73234ab33aad0b7597302a7a52a2db3f6e
+Starting build at 03/31/11 16:39
 
 Build details:
 
@@ -28,7 +24,7 @@ Script arguments:
    iphone
 
 Building from: /Library/Application Support/Titanium/mobilesdk/osx/1.6.1/iphone
-Platform: Darwin Kernel Version 10.7.0: Sat Jan 29 15:17:16 PST 2011; root:xnu-1504.9.37~1/RELEASE_I386
+Platform: Darwin Kernel Version 10.6.0: Wed Nov 10 18:13:17 PST 2010; root:xnu-1504.9.26~3/RELEASE_I386
 
 Xcode path is: /Developer
 
@@ -71,11 +67,3 @@ Generated the following stylecode code:
 	</dict>
 </plist>
 Finishing build
-
-Exception detected in script:
-Traceback (most recent call last):
-  File "/Library/Application Support/Titanium/mobilesdk/osx/1.6.1/iphone/builder.py", line 1201, in main
-    os.waitpid(sim.pid,0)
-  File "/Library/Application Support/Titanium/mobilesdk/osx/1.6.1/iphone/builder.py", line 1137, in handler
-    sys.stdout.flush()
-IOError: [Errno 32] Broken pipe

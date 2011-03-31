@@ -1,4 +1,4 @@
 // constant
 
 var baseUrl = 'http://174.143.210.69:8080/fanwave/1.0/';
-var username =  Ti.App.Properties.getList('user')[0].value;//'ken.sun@wildmindcorp.com';
+var username =  'ken.sun@wildmindcorp.com';

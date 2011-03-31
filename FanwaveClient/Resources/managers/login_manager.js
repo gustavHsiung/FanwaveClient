@@ -34,11 +34,13 @@ var loginManager = {
 
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
+
 	Ti.API.info('loginManager: '+ e.data.username+' didLoginFanwave');
 	var userInfo = [
         {title:'username',value:e.data.username},
         {title:'nickname',value:e.data.nickname}
     ];
 	Ti.App.Properties.setList('user',userInfo);
+
 	var user = e.data;
 });

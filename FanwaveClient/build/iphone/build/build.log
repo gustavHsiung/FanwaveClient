@@ -5,7 +5,7 @@ reporting an issue to help us understand your environment, build settings
 and aid in debugging. Please attach this log to any issue that you report.
 ================================================================================
 
-Starting build at 03/29/11 19:33
+Starting build at 03/30/11 19:19
 
 Build details:
 
@@ -67,3 +67,11 @@ Generated the following stylecode code:
 	</dict>
 </plist>
 Finishing build
+
+Exception detected in script:
+Traceback (most recent call last):
+  File "/Library/Application Support/Titanium/mobilesdk/osx/1.6.1/iphone/builder.py", line 1201, in main
+    os.waitpid(sim.pid,0)
+  File "/Library/Application Support/Titanium/mobilesdk/osx/1.6.1/iphone/builder.py", line 1137, in handler
+    sys.stdout.flush()
+IOError: [Errno 32] Broken pipe

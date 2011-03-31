@@ -1,7 +1,7 @@
 // login manager
 
-Ti.include("./constant.js");
-Ti.include("./utils/network.js");
+
+Ti.include("objects/current_user.js");
 
 var loginManager = {
 
@@ -34,6 +34,6 @@ var loginManager = {
 
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
-	Ti.API.info('didLoginFanwave');
-	var user = e.data;
+	Ti.API.info(' login manager: didLoginFanwave');
+	setCurrentUser(e.data);
 });

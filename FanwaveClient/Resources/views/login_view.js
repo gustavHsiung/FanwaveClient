@@ -1,7 +1,9 @@
 // login view
 
 
-Ti.include("./managers/login_manager.js");
+Ti.include("constant.js");
+Ti.include("utils/network.js");
+Ti.include("managers/login_manager.js");
 
 // window container
 //
@@ -128,7 +130,7 @@ loginWin.add(loginbt);
 //
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
-	Ti.API.info('didLoginFanwave');
+	Ti.API.info('login view: didLoginFanwave');
 	loginWin.close();
 });
 

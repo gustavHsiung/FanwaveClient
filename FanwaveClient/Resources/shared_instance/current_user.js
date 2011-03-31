@@ -36,48 +36,51 @@ var CurrentUser = {
 	setBadgeID: 	function (data) {badgeID = data},
 	setFirstLogin:  function (data) {first_login = data},
 	
-	setPrivacy: function (data) { 
-							privacy = {
-										reminder: data.seereminder,
-										splash: data.pokeme,
-										chatroom: data.seechatroom,
-										email: data.seeemail,
-										sex: data.seeSex,
-										birth: data.seeBirth,
-										facebook: data.seefacebook
-										}; 
-						  		},
-	setExtraInfo: function (data) { 
-							extra_info = {
-											mood: data.mood,
-					   						sex: data.sex,
-					   						bio: data.bio,
-					  					    website: data.website,
-					   						youtube: data.youtube,
-					   						location: {
-					   			 						city: data.location.city,
-					   			 						longitude: data.location.longitude,
-					   			 						latitude: data.location.latitude
-					   			  					   }
-					   			  			}; 
-						  		},
-	setScores: function (data) { 
-							scores = {
-										follow: data.followNum,
-										rate: data.rateNum,
-										friend: data.friendNum,
-										friend_invite: data.friendInviteNum,
-										friend_accept: data.friendAcceptNum,
-										comment: data.commentNum,
-										wave_in: data.checkInNum,
-										like: data.likeNum,
-										liked: data.likedNum,
-										dislike: data.dislikeNum,
-										disliked: data.dislikedNum,
-										badge: data.badgeNum,
-										point: data.points
-										}; 
-						 		}
+	setPrivacy: function (data) 
+	{
+		privacy = {
+					reminder: data.seereminder,
+					splash: data.pokeme,
+					chatroom: data.seechatroom,
+					email: data.seeemail,
+					sex: data.seeSex,
+					birth: data.seeBirth,
+					facebook: data.seefacebook
+					}; 
+	},
+	setExtraInfo: function (data) 
+	{ 
+		extra_info = {
+						mood: data.mood,
+					   	sex: data.sex,
+					   	bio: data.bio,
+					  	website: data.website,
+					   	youtube: data.youtube,
+					   	location: {
+					   			 	city: data.location.city,
+					   			 	longitude: data.location.longitude,
+					   			 	latitude: data.location.latitude
+					   			  	}
+					   }; 
+	},
+	setScores: function (data) 
+	{ 
+		scores = {
+					follow: data.followNum,
+					rate: data.rateNum,
+					friend: data.friendNum,
+					friend_invite: data.friendInviteNum,
+					friend_accept: data.friendAcceptNum,
+					comment: data.commentNum,
+					wave_in: data.checkInNum,
+					like: data.likeNum,
+					liked: data.likedNum,
+					dislike: data.dislikeNum,
+					disliked: data.dislikedNum,
+					badge: data.badgeNum,
+					point: data.points
+					}; 
+	}
 };
 
 function setCurrentUser (user_data)

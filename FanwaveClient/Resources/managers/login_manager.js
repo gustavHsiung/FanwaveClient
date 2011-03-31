@@ -34,6 +34,7 @@ var loginManager = {
 
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
+       //chiayuan
 	Ti.API.info('didLoginFanwave');
 	var user = e.data;
 });

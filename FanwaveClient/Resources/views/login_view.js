@@ -6,8 +6,8 @@ Ti.include("./managers/login_manager.js");
 // window container
 //
 var loginWin = Titanium.UI.createWindow({
-	height:480,
-	width:320
+	height:app.win_width,
+	width:app.win_width
 });
 	
 	
@@ -75,17 +75,10 @@ var emailtf = Titanium.UI.createTextField({
 	left: 100,
 	width: 200,
 	keyboardType: Titanium.UI.KEYBOARD_EMAIL,
-	returnKeyType: Titanium.UI.RETURNKEY_DONE,
-	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	returnKeyType: Titanium.UI.RETURNKEY_NEXT,
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization:Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE
 });
-emailtf.addEventListener('return', function()
-{
-	emailtf.blur();
-});
-
-loginWin.add(emailtf);
-
-
 // password text field
 //
 var passtf = Titanium.UI.createTextField({
@@ -94,15 +87,25 @@ var passtf = Titanium.UI.createTextField({
 	top: 130,
 	left: 100,
 	width: 200,
+	passwordMask:true,
 	keyboardType: Titanium.UI.KEYBOARD_DEFAULT,
 	returnKeyType: Titanium.UI.RETURNKEY_DONE,
-	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED
+	borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
+	autocapitalization:Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE
 });
+
+emailtf.addEventListener('return', function()
+{
+	emailtf.blur();
+	passtf.focus();
+});
+
 passtf.addEventListener('return', function()
 {
 	passtf.blur();
 });
-	
+
+loginWin.add(emailtf);
 loginWin.add(passtf);
 
 
@@ -128,7 +131,7 @@ loginWin.add(loginbt);
 //
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
-	Ti.API.info('didLoginFanwave');
+	Ti.API.info('login view didLoginFanwave');
 	loginWin.close();
 });
 

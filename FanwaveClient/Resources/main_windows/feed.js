@@ -22,12 +22,13 @@ var followFeeds = [];
 
 // feed tabbed bar
 //
+
 var feedtb = Titanium.UI.createTabbedBar({
 	labels:['News', 'Friend', 'Follow'],
-	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
+	style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,
 	top:0,
 	height:40,
-	width:320,
+	width:Ti.UI.currentWindow.size.width,
 	index:0
 });
 win.add(feedtb);
@@ -45,7 +46,7 @@ feedtb.addEventListener('click', function()
 			break;
 			
 		case 2:
-			feedManager.getFollowFeed(username);
+			feedManager.getFollowFeed(Ti.App.Properties.getList('user')[0].value);
 			break;
 	}
 });
@@ -80,7 +81,7 @@ function didSelectedAtIndex(index)
 			{
 				feedtv.appendRow(createLoadingMoreCell());
 				feedtv.deleteRow(index);
-				feedManager.getMoreFollowFeed(username, friendFeeds[index-1]);
+				feedManager.getMoreFollowFeed(Ti.App.Properties.getList('user')[0].value, friendFeeds[index-1]);
 			}
 			break;
 	}
@@ -90,6 +91,7 @@ function didSelectedAtIndex(index)
 //
 var feedtv = Titanium.UI.createTableView({
 	style: Titanium.UI.iPhone.TableViewStyle.PLAIN,
+	backgroundColor:'transparent',
 	top: 40
 });
 

@@ -22,7 +22,7 @@ function createWaveInCell (feed)
 	cell.add(nickname);
 	
 	var content = Ti.UI.createLabel({
-		text: 'wave in ' + feed_info.title,
+		text: 'wave-in ' + feed_info.title,
 		color: 'black',
 		textAlign: 'left',
 		font: {fontSize: 14},

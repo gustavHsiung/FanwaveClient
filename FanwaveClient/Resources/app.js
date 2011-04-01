@@ -28,7 +28,8 @@ var app = {
    	 	navBarHidden: true
 	});
 	var tab1 = Titanium.UI.createTab({  
- 	   title:'Waves',
+		title:'Waves',
+	    icon:'pics/tab_1.png',
 	    window:win1
 	});
 
@@ -43,6 +44,7 @@ var app = {
 	});
 	var tab2 = Titanium.UI.createTab({  
   	  title:'Friends',
+  	  icon:'pics/tab_2.png',
   	  window:win2
 	});
 
@@ -58,6 +60,7 @@ var app = {
 	});
 	var tab3 = Titanium.UI.createTab({  
 	    title:'Hot',
+	    icon:'pics/tab_3.png',
 	    window:win3
 	});
 

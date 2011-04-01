@@ -3,7 +3,7 @@ var win = Titanium.UI.currentWindow;
 
 // hot tabbed bar
 //
-var hottb = Titanium.UI.createTabbedBar({
+/*var hottb = Titanium.UI.createTabbedBar({
 	labels:['Future', 'Now', 'Week'],
 	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
 	top:0,
@@ -12,7 +12,7 @@ var hottb = Titanium.UI.createTabbedBar({
 	index:0
 });
 win.add(hottb);
-
+*/
 
 // hot table view
 //

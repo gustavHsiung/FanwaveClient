@@ -1,7 +1,5 @@
 // login manager
 
-Ti.include("./constant.js");
-Ti.include("./utils/network.js");
 
 var loginManager = {
 
@@ -27,20 +25,13 @@ var loginManager = {
 		};
 	
 		c.open('POST', baseUrl + 'member/user/login');
-		createHeader(c);
+		createHeader(c, CurrentUser);
 		c.send({username: username, password: password, language: lang});
 	}
 };
 
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
-
-	Ti.API.info('loginManager: '+ e.data.username+' didLoginFanwave');
-	var userInfo = [
-        {title:'username',value:e.data.username},
-        {title:'nickname',value:e.data.nickname}
-    ];
-	Ti.App.Properties.setList('user',userInfo);
-
-	var user = e.data;
+	Ti.API.info('login_manager: didLoginFanwave '+ e.data.username);
+	CurrentUser.setUser(e.data);
 });

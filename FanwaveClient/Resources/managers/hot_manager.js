@@ -16,7 +16,7 @@ var hotManager = {
 		};
 	
 		c.open('GET', baseUrl + 'top/reminder/tw/20');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -31,7 +31,7 @@ var hotManager = {
 		};
 	
 		c.open('GET', baseUrl + 'top/crowded/tw/20');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -46,7 +46,7 @@ var hotManager = {
 		};
 	
 		c.open('GET', baseUrl + 'top/mixedprograms/tw/7/20');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	}
 };

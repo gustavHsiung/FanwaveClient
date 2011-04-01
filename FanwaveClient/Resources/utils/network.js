@@ -1,6 +1,6 @@
 // network utility
 
-function createHeader(request)
+function createHeader(request, currentUser)
 {
 	request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=utf-8');
 	request.setRequestHeader('username', username);//'ken.sun@wildmindcorp.com');

@@ -1,5 +1,9 @@
 var win = Titanium.UI.currentWindow;
 
+// input variables
+//
+var currentUser = win.currentUser;
+
 
 // variables and functions inclusion
 //
@@ -9,7 +13,7 @@ Ti.include("../cell_views/feed_cell_view.js");
 Ti.include("../cell_views/more_cell_view.js");
 
 
-// variables
+// scope variables
 //
 var moreNewsFeed = false;
 var moreFriendFeed = false;
@@ -28,7 +32,7 @@ var feedtb = Titanium.UI.createTabbedBar({
 	style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,
 	top:0,
 	height:40,
-	width:Ti.UI.currentWindow.size.width,
+	width:win.size.width,
 	index:0
 });
 win.add(feedtb);
@@ -46,7 +50,7 @@ feedtb.addEventListener('click', function()
 			break;
 			
 		case 2:
-			feedManager.getFollowFeed(Ti.App.Properties.getList('user')[0].value);
+			feedManager.getFollowFeed(currentUser.getUsername());
 			break;
 	}
 });
@@ -81,7 +85,7 @@ function didSelectedAtIndex(index)
 			{
 				feedtv.appendRow(createLoadingMoreCell());
 				feedtv.deleteRow(index);
-				feedManager.getMoreFollowFeed(Ti.App.Properties.getList('user')[0].value, friendFeeds[index-1]);
+				feedManager.getMoreFollowFeed(currentUser.getUsername(), friendFeeds[index-1]);
 			}
 			break;
 	}

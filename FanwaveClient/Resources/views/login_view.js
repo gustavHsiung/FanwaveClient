@@ -1,13 +1,15 @@
 // login view
 
 
-Ti.include("./managers/login_manager.js");
+Ti.include("constant.js");
+Ti.include("utils/network.js");
+Ti.include("managers/login_manager.js");
 
 // window container
 //
 var loginWin = Titanium.UI.createWindow({
-	height:app.win_width,
-	width:app.win_width
+	height: app.win_width,
+	width: app.win_width
 });
 	
 	
@@ -131,7 +133,7 @@ loginWin.add(loginbt);
 //
 Ti.App.addEventListener('didLoginFanwave', function(e)
 {
-	Ti.API.info('login view didLoginFanwave');
+	Ti.API.info('login_view: didLoginFanwave');
 	loginWin.close();
 });
 

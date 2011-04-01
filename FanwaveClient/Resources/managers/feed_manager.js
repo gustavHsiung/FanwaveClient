@@ -16,7 +16,7 @@ var feedManager = {
 		};
 	
 		c.open('GET', baseUrl + 'feed/all/get');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -31,7 +31,7 @@ var feedManager = {
 		};
 	
 		c.open('GET', baseUrl + 'feed/friend/get');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -46,7 +46,7 @@ var feedManager = {
 		};
 	
 		c.open('POST', baseUrl + 'follow/programfeed/20/get');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send({username: follower});
 	},
 	
@@ -61,7 +61,7 @@ var feedManager = {
 		};
 		Ti.API.info('feed id: ' + feed.info.uuid);
 		c.open('GET', baseUrl + 'feed/all/' + feed.info.uuid + '/prev');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -76,7 +76,7 @@ var feedManager = {
 		};
 	
 		c.open('GET', baseUrl + 'feed/friend/' + feed.info.uuid + '/prev');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send();
 	},
 	
@@ -91,7 +91,7 @@ var feedManager = {
 		};
 	
 		c.open('POST', baseUrl + 'follow/programfeed/' + feed.info.uuid + '/20/next');
-		createHeader(c);
+		createHeader(c, currentUser);
 		c.send({username: follower});
 	}
 };

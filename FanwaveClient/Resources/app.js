@@ -95,4 +95,12 @@ var app = {
 
 app.init();
 
-Ti.include("views/login_view.js");
+
+// check if need login
+//
+if(CurrentUser.getUsername() == undefined) {
+	Ti.include("views/login_view.js");
+}
+else {
+	app.openTab();
+}

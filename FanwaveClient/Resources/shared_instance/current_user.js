@@ -1,4 +1,7 @@
 // current user
+//
+// as a shared instance, this file should be included only once
+// for avoiding shared variable being re-initilalzed
 
 var username;
 var password;
@@ -13,6 +16,17 @@ var scores;
 var first_login;
 
 var CurrentUser = {
+
+	init: function ()
+	{
+		this.user_info = Ti.App.Properties.getList('user_info');
+		if(this.user_info) 
+		{
+			setCurrentUser(this.user_info[0]);
+			Ti.API.info('current user: ' + CurrentUser.getUsername());
+		}
+	},
+	
 	// getter
 	getUsername: 	function () {return username},
 	getPassword: 	function () {return password},
@@ -96,6 +110,11 @@ function setCurrentUser (user_data)
 	CurrentUser.setPrivacy(user_data.privacy);
 	CurrentUser.setExtraInfo(user_data.extraInfo);
 	CurrentUser.setScores(user_data.score);
+	
+	var array = [user_data];
+	Ti.App.Properties.setList('user_info', array);
 
 	Ti.App.fireEvent('didUpdateCurrentUser');
 };
+
+CurrentUser.init();

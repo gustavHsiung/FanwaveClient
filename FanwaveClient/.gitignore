@@ -1,8 +1,7 @@
 # Build directories #
 #####################
 tmp
-
-
+build/*
 # OS generated files #
 ######################
 .DS_Store?

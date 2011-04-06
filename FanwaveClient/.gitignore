@@ -1,0 +1,12 @@
+# Build directories #
+#####################
+tmp
+build/android/
+build/iphone/
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db

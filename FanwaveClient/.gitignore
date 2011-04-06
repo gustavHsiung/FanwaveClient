@@ -1,8 +1,7 @@
 # Build directories #
 #####################
 tmp
-build/android/
-build/iphone/
+
 
 # OS generated files #
 ######################

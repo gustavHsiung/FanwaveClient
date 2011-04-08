@@ -60,7 +60,7 @@ var loginManager = {
 // create login window
 //
 var loginWin = Titanium.UI.createWindow({
-	height: app.win_width,
+	height: app.win_height,
 	width: app.win_width
 });
 	

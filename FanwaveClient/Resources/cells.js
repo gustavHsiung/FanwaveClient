@@ -353,3 +353,51 @@ function createLoadingMoreCell ()
 	
 	return cell;
 };
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// feed cells 
+//////////////////////////////////////////////////////////////////////////////////
+
+function createMessageCell (msg)
+{
+	var cell = Ti.UI.createTableViewRow ({
+		width: 320,
+		height: 'auto',
+	});
+	
+	var msglb = Ti.UI.createLabel ({
+		text: msg,
+		color: 'black',
+		textAlign: 'left',
+		font: {fontSize: 20},
+		height: 'auto',
+		width: 'auto',
+		left: 5,
+		visible: true
+	});
+	cell.add(msglb);
+	
+	return cell;
+};
+
+function createHotCell (title) 
+{
+	var cell = Ti.UI.createTableViewRow ({
+		width: 320,
+		height: 'auto'
+	});
+	
+	var titlelb = Ti.UI.createLabel ({
+		text: title,
+		color: 'black',
+		textAlign: 'left',
+		font: {fontSize: 20},
+		height: 'auto',
+		width: 'auto',
+		left: 5
+	});
+	cell.add(titlelb);
+	
+	return cell;
+};

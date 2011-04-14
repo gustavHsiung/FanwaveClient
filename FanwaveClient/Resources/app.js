@@ -94,6 +94,21 @@ var app = {
 	    	window:win3
 		});
 		this.tabGroup.addTab(tab3);
+		
+		// create websocket window
+		//
+		var win4 = Titanium.UI.createWindow({
+			url: 'ws_feed.js',
+			title: 'WS feed',
+			backgroundColor:'#fff',
+			navBarHidden: true,
+			currentUser: CurrentUser
+		});
+		var tab4 = Titanium.UI.createTab({
+			title: 'WS feed',
+			window:win4
+		});
+		this.tabGroup.addTab(tab4);
  	},
  	// end of Initiate app
  

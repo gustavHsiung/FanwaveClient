@@ -12,15 +12,7 @@
     <script type="text/javascript" src="./websocket.js"></script>
     <script type="text/javascript">
     
-    	if(!Ti) {
-                // Shim to make it run in browser
-                var fakeTi = true;
-                var Ti = {
-                    API:{
-                        debug: function(msg){
-                            console.debug(msg);
-                        },
-                    },
+    	var Ti = {
                     App:{
                         addEventListener: function(name, func){
                             $(document).bind(name, func);
@@ -30,7 +22,6 @@
                         }
                     }
                 };
-        }
         $('body').attach(WebSocket);
         
         Ti.App.addEventListener('web', function(e) {

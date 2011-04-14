@@ -9,11 +9,6 @@ WebSocket = $.klass({
 	// Event delegator
     handleEvents: function(e, fakee)
     {
-    	Ti.API.info('proxy event: ' + e.func + ' to ' + e.to);
-        if(fakee){
-            var e = fakee;
-        }
-        
         Ti.App.fireEvent(e.to, e);
     },
     

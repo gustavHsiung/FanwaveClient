@@ -11,9 +11,15 @@
   <body>
     <script type="text/javascript" src="./websocket.js"></script>
     <script type="text/javascript">
-    
-    	var Ti = {
-                    App:{
+
+    	if(!Ti){
+                var Ti = {
+                    API: {
+                        debug: function(msg){
+                            console.debug(msg);
+                        }
+                    },
+                    App: {
                         addEventListener: function(name, func){
                             $(document).bind(name, func);
                         },
@@ -22,9 +28,10 @@
                         }
                     }
                 };
+            }
         $('body').attach(WebSocket);
         
-        Ti.App.addEventListener('web', function(e) {
+      Ti.App.addEventListener('web', function(e) {
         		switch(e.func)
         		{
         			case 'sendMessage':
@@ -42,7 +49,7 @@
       	  });
       	  
           socket.send(msg);
-      }
+      };
       
       function receive(msg) 
       {

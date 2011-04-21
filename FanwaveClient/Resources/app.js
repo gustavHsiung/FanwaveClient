@@ -132,7 +132,8 @@ app.init();
 
 // check if need login
 //
-if(CurrentUser.getUsername() == undefined) {
+
+if(CurrentUser.getUsername().length == 0) {
 	Ti.include("login_view.js");
 }
 else {

@@ -1,22 +1,28 @@
-WebSocket = $.klass({
+WebSocket = {
 
-	// Initiate WebSocket
-	initialize: function (arg) 
-	{	
-		this.initEvents();
+	///////////////// functions for app //////////////////
+	
+	send: function (data)
+	{
+		Ti.App.fireEvent('web_send_data', {data: data} );
 	},
 	
-	// Event delegator
-    handleEvents: function(e, fakee)
-    {
-        Ti.App.fireEvent(e.to, e);
-    },
-    
-    // Initiate application wide events
-    initEvents: function()
-    {
-       this.proxiedHandleEvents = $.proxy(this.handleEvents, this);
-       Ti.App.addEventListener('websocket', this.proxiedHandleEvents);
-    }
-    
-});
+	///////////////// functions for web //////////////////
+	
+	receive: function (data)
+	{
+		Ti.App.fireEvent('app_receive_data', {data: data} );
+	},
+	
+	// Connection Status Feedback
+	
+	websocketDidConnect: function ()
+	{
+		Ti.App.fireEvent('app_websocket_connected');
+	},
+	
+	websocketDidDisconnect: function ()
+	{
+		Ti.App.fireEvent('app_websocket_disconnected');
+	}
+};

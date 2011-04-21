@@ -6,6 +6,7 @@ var currentUser = win.currentUser;
 
 Ti.include("constant.js");
 Ti.include("cells.js");
+Ti.include("utf8.js");
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,15 @@ var hotManager = {
 	
 		c.onload = function()
 		{
-			var hots = JSON.parse(this.responseData);
+			var hots;
+			
+			if (Ti.Platform.name == 'android') {
+    			hots = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			hots = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetFutureHot', {data:hots});
 		};
 	
@@ -59,7 +68,15 @@ var hotManager = {
 	
 		c.onload = function()
 		{
-			var hots = JSON.parse(this.responseData);
+			var hots;
+			
+			if (Ti.Platform.name == 'android') {
+    			hots = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			hots = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetNowHot', {data:hots});
 		};
 	
@@ -74,7 +91,15 @@ var hotManager = {
 	
 		c.onload = function()
 		{
-			var hots = JSON.parse(this.responseData);
+			var hots;
+			
+			if (Ti.Platform.name == 'android') {
+    			hots = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			hots = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetWeekHot', {data:hots});
 		};
 	
@@ -87,17 +112,38 @@ var hotManager = {
 
 /////////////////// UI variables ///////////////////////
 
-// hot tabbed bar
+// future hot button
 //
-var hottb = Titanium.UI.createTabbedBar({
-	labels:['Future', 'Now', 'Week'],
-	style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-	top:0,
-	height:40,
-	width:320,
-	index:0
+var futurebt = Titanium.UI.createButton({
+	title: 'Future',
+	top: 5,
+	height: 30,
+	width: 100,
+	left: 5
 });
-win.add(hottb);
+win.add(futurebt);
+
+// now hot button
+//
+var nowbt = Titanium.UI.createButton({
+	title: 'Now',
+	top: 5,
+	height: 30,
+	width: 100,
+	left: 110
+});
+win.add(nowbt);
+
+// week hot button
+//
+var weekbt = Titanium.UI.createButton({
+	title: 'Week',
+	top: 5,
+	height: 30,
+	width: 100,
+	right: 5
+});
+win.add(weekbt);
 
 // hot table view
 //
@@ -112,26 +158,26 @@ win.add(hottv);
 // event listener 
 //////////////////////////////////////////////////////////////////////////////////
 
-// hot tabbed bar listener
+// future hot button listener
 //
-hottb.addEventListener('click', function()
+futurebt.addEventListener('click', function ()
 {
-	switch (hottb.index)
-	{
-		case 0:
-			hotManager.getFutureHot();
-			break;
-			
-		case 1:
-			hotManager.getNowHot();
-			break;
-			
-		case 2:
-			hotManager.getWeekHot();
-			break;
-	}
+	hotManager.getFutureHot();
 });
 
+// now hot button listener
+//
+nowbt.addEventListener('click', function ()
+{
+	hotManager.getNowHot();
+});
+
+// week hot button listener
+//
+weekbt.addEventListener('click', function ()
+{
+	hotManager.getWeekHot();
+});
 
 // Future Hot listener
 //

@@ -5,6 +5,7 @@ var win = Titanium.UI.currentWindow;
 var currentUser = win.currentUser;
 
 Ti.include("cells.js");
+Ti.include("./websocket/websocket.js");
 
 // bind function utility
 //
@@ -20,20 +21,31 @@ var ws_feed = {
 
 	init: function ()
 	{	
+		
 		/////////////// init UI layout ///////////////
 		
-		// feed tabbed bar
+		// message feed button
 		//
-		this.feedtb = Titanium.UI.createTabbedBar({
-			labels:['Message', 'Hot'],
-			style:Titanium.UI.iPhone.SystemButtonStyle.BAR,
-			top:0,
-			height:40,
-			width:320,
-			index:0
+		this.msgbt = Titanium.UI.createButton({
+			title: 'Message',
+			top: 5,
+			height: 40,
+			width: 160,
+			left: 0
 		});
-		win.add(this.feedtb);
-
+		win.add(this.msgbt);
+		
+		// hot feed button
+		//
+		this.hotbt = Titanium.UI.createButton({
+			title: 'Hot',
+			top: 5,
+			height: 40,
+			width: 160,
+			right: 0
+		});
+		win.add(this.hotbt);
+		
 		// create message text field
 		//
 		this.msgtf = Titanium.UI.createTextField({
@@ -42,8 +54,6 @@ var ws_feed = {
 			top: 50,
 			left: 20,
 			width: 200,
-			keyboardType: Titanium.UI.KEYBOARD_EMAIL,
-			returnKeyType: Titanium.UI.RETURNKEY_RETURN,
 			borderStyle: Titanium.UI.INPUT_BORDERSTYLE_ROUNDED,
 			autocapitalization:Titanium.UI.TEXT_AUTOCAPITALIZATION_NONE
 		});
@@ -75,13 +85,18 @@ var ws_feed = {
 		
 		/////////////// init variables ////////////////
 		
+		// user select index
+		//
+		this.selected = 'message';
+		
 		// feed data array
 		//
 		this.msgFeeds = [];
 		this.hotFeeds = [];
-		
+
 		// websocket delegate
 		//
+		
 		this.web = Ti.UI.createWebView({
 			url: './websocket/websocket_delegate.html',
 			visible: false
@@ -93,18 +108,30 @@ var ws_feed = {
 	{
 		// listen event for app
 		//
-		Ti.App.addEventListener('app', _.bind(this.handleEvents, this));
+		Ti.App.addEventListener('app_receive_data', _.bind(this.receiveData, this));
+		Ti.App.addEventListener('app_websocket_connected', _.bind(this.websocketConnected, this));
+		Ti.App.addEventListener('app_websocket_disconnected', _.bind(this.websocketDisconnected, this));
 		
 		// send button event listener
 		//
-		this.sendbt.addEventListener('click', function () {
-			ws_feed.sendMessage(ws_feed.msgtf.value);
+		this.sendbt.addEventListener('click', function () 
+		{
+			ws_feed.sendData(ws_feed.msgtf.value);
 		});
 		
-		// feed tabbed bar listener
+		// message feed button event listener
 		//
-		this.feedtb.addEventListener('click', function()
+		this.msgbt.addEventListener('click', function()
 		{
+			ws_feed.selected = 'message';
+			ws_feed.refreshTable();
+		});
+		
+		// hot feed button event listener
+		//
+		this.hotbt.addEventListener('click', function ()
+		{
+			ws_feed.selected = 'hot';
 			ws_feed.refreshTable();
 		});
 	},
@@ -113,9 +140,9 @@ var ws_feed = {
 	{		
 		rows = [];
 		
-		switch (this.feedtb.index)
+		switch (this.selected)
 		{
-			case 0:
+			case 'message':
 				for (var i in this.msgFeeds)
 				{
 					var msg = this.msgFeeds[i];
@@ -123,7 +150,7 @@ var ws_feed = {
 				}
 				break;
 				
-			case 1:
+			case 'hot':
 				for (var i in this.hotFeeds)
 				{
 					var title = this.hotFeeds[i];
@@ -135,49 +162,16 @@ var ws_feed = {
 		
 		this.feedtv.setData(rows);
 	},
-	
-	// Event delegator
-    handleEvents: function(e)
+    
+    sendData: function (data) 
     {
-        if (this[e.func]) 
-        {
-            if (!e.data) {
-                e.data = {};
-            }
-            this[e.func](e);
-        }
+    	WebSocket.send(data);
     },
     
-    fire: function(opts)
+    receiveData: function (e)
     {
-        opts.from = 'app';
-        Ti.App.fireEvent('websocket', opts);
-    },
-    
-    sendMessage: function (msg) 
-    {
-    	Ti.API.info('send: ' + msg);
-    	
-		this.fire({
-			to: 'web',
-			func: 'sendMessage',
-			data: { message:msg }
-		});
-    },
-    
-    messageDidSend: function (e)
-    {
-    	var text = 'you said:\n' + e.data.message;
-    	var temp = [text];
-    	this.msgFeeds = temp.concat(this.msgFeeds);
-    			
-    	if (this.feedtb.index == 0) this.refreshTable();
-    },
-    
-    receiveMessage: function (e)
-    {
-    	var msg = e.data.message.message;
-    	var hot = e.data.message.hot;
+    	var msg = e.data.message;
+    	var hot = e.data.hot;
     	
     	if (msg) 
     	{
@@ -193,14 +187,14 @@ var ws_feed = {
     			this.msgFeeds = temp.concat(this.msgFeeds);
     		}
     		
-    		if (this.feedtb.index == 0) this.refreshTable();
+    		if (this.selected == 'message') this.refreshTable();
     	};
     	
     	if (hot) 
     	{
-    		this.hotFeeds = e.data.message.hot;
+    		this.hotFeeds = e.data.hot;
     		
-    		if (this.feedtb.index == 1) this.refreshTable();
+    		if (this.selected == 'hot') this.refreshTable();
     	};
     },
     

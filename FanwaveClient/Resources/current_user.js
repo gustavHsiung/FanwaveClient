@@ -3,17 +3,17 @@
 // as a shared instance, this file should be included only once
 // for avoiding shared variable being re-initilalzed
 
-var username;
-var password;
-var nickname;
-var email;
-var jid;
-var jid_password;
-var badgeID;
-var privacy;
-var extra_info;
-var scores;
-var first_login;
+var username = '';
+var password = '';
+var nickname = '';
+var email = '';
+var jid = '';
+var jid_password = '';
+var badgeID = '';
+var privacy = '';
+var extra_info = {};
+var scores = {};
+var first_login = {};
 
 var CurrentUser = {
 

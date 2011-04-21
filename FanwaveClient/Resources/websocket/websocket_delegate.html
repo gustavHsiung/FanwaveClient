@@ -4,14 +4,12 @@
     <title>socket.io client delegate</title>
     
     <script type="text/javascript" src="./support/socket.io-client/socket.io.js"></script>
-    <script type="text/javascript" src="./jquery-1.4.2.js"></script>
-    <script type="text/javascript" src="./lowpro.jquery.js"></script>
 
   </head>
   <body>
     <script type="text/javascript" src="./websocket.js"></script>
     <script type="text/javascript">
-
+    
     	if(!Ti){
                 var Ti = {
                     API: {
@@ -29,36 +27,20 @@
                     }
                 };
             }
-        $('body').attach(WebSocket);
-        
-      Ti.App.addEventListener('web', function(e) {
-        		switch(e.func)
-        		{
-        			case 'sendMessage':
-        				send(e.data.message);
-        		}
-        	});
+ 
+ 	  Ti.App.addEventListener('web_send_data', function (e)
+ 	  {
+ 	  	  send(e.data);
+ 	  });
       
       function send(msg)
-      {
-      	  Ti.App.fireEvent('websocket', {
-      	  	  to: 'app',
-      	  	  from: 'web',
-      	  	  func: 'messageDidSend',
-      	  	  data: { message:msg }
-      	  });
-      	  
+      {	  
           socket.send(msg);
       };
       
-      function receive(msg) 
+      function receive(obj)
       {
-      	  Ti.App.fireEvent('websocket', {
-      	      to: 'app',
-      	      from: 'web',
-        	  func: 'receiveMessage',
-        	  data: { message:msg }
-          });
+      	  WebSocket.receive(obj);
       };
       
       var socket = new io.Socket("211.22.104.2", 
@@ -67,51 +49,29 @@
       								rememberTransport: false,
 								});
       socket.connect();
-
       
-      socket.on('connect', function() {
-          Ti.App.fireEvent('websocket', {
-          	to: 'app',
-      	    from: 'web',
-        	func:'websocketConnected',
-        	data: {}
-        	});
+      // websocket event listener
+      
+      socket.on('connect', function()
+      {
+      	  WebSocket.websocketDidConnect();
       });
       
-      socket.on('disconnect', function() {
-      	  Ti.App.fireEvent('websocket', {
-      	  	to: 'app',
-      	    from: 'web',
-        	func:'websocketDisconnected',
-        	data: {}
-        	});
+      socket.on('disconnect', function() 
+      {
+      	  WebSocket.websocketDidDisconnect();
       });
       
-      socket.on('reconnect', function(){
-          Ti.App.fireEvent('websocket', {
-          	to: 'app',
-      	    from: 'web',
-        	func:'websocketReconnected',
-        	data: {}
-        	});
+      socket.on('reconnect', function()
+      {
       });
       
-      socket.on('reconnecting', function( nextRetry_ms ){
-      	  Ti.App.fireEvent('websocket', {
-      	  	to: 'app',
-      	    from: 'web',
-        	func:'websocketReconnecting',
-        	data: { retry:nextRetry_ms }
-        	});
+      socket.on('reconnecting', function( nextRetry_ms )
+      {
       });
       
-      socket.on('reconnect_failed', function(){
-          Ti.App.fireEvent('websocket', {
-          	to: 'app',
-      	    from: 'web',
-        	func:'websocketReconnectFailed',
-        	data: {}
-        	});
+      socket.on('reconnect_failed', function()
+      {
       });
       
       socket.on('message', function(obj) {

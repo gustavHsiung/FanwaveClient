@@ -11,5 +11,5 @@ win.add(web);
 
 web.addEventListener('load', function () {
 	var action = '$(\"#userName\").val(\"ken.sun@wildmindcorp.com\");$(\"#password\").val(\"wewe\");$(\"#logInButton\").click();';
-	web.evalJS(action);
+	//web.evalJS(action);
 });

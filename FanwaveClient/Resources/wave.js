@@ -7,6 +7,7 @@ var currentUser = win.currentUser;
 
 Ti.include("constant.js");
 Ti.include("cells.js");
+Ti.include("utf8.js");
 
 
 //////////////////////////////////////////////////////////////////////////////////
@@ -29,9 +30,9 @@ function createHeaderForRequest(request)
 //
 function didSelectWaveAtIndex(index)
 {
-	switch (wavetb.index)
+	switch (selected)
 	{
-		case 0:
+		case 'news':
 			if (index == newsWaves.length && moreNewsWave)
 			{
 				wavetv.appendRow(createLoadingMoreCell());
@@ -40,7 +41,7 @@ function didSelectWaveAtIndex(index)
 			}
 			break;
 			
-		case 1:
+		case 'friend':
 			if (index == friendWaves.length && moreFriendWave)
 			{
 				wavetv.appendRow(createLoadingMoreCell());
@@ -49,7 +50,7 @@ function didSelectWaveAtIndex(index)
 			}
 			break;
 			
-		case 2:
+		case 'follow':
 			if (index == followWaves.length && moreFollowWave)
 			{
 				wavetv.appendRow(createLoadingMoreCell());
@@ -66,6 +67,8 @@ function didSelectWaveAtIndex(index)
 //////////////////////////////////////////////////////////////////////////////////
 
 /////////////////// non-UI variables ///////////////////
+
+var selected = 'news';
 
 // more waves flag
 //
@@ -91,7 +94,17 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+				Ti.API.info('utf-8 decoding...');
+    			waves = JSON.parse(utf8.decode(this.responseText));
+    			Ti.API.info('utf-8 decoding end');
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+
 			Ti.App.fireEvent('didGetNewsWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 	
@@ -108,7 +121,15 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+    			waves = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetFriendWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 	
@@ -125,7 +146,15 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+    			waves = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetFollowWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 	
@@ -142,7 +171,15 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+    			waves = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetMoreNewsWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 		Ti.API.info('wave id: ' + wave.info.uuid);
@@ -159,7 +196,15 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+    			waves = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetMoreFriendWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 	
@@ -176,7 +221,15 @@ var waveManager = {
 		//
 		c.onload = function()
 		{
-			var waves = JSON.parse(this.responseData);
+			var waves;
+			
+			if (Ti.Platform.name == 'android') {
+    			waves = JSON.parse(utf8.decode(this.responseText));
+			}
+			else if(Ti.Platform.name == 'iPhone OS'){
+    			waves = JSON.parse(this.responseText);
+			}
+			
 			Ti.App.fireEvent('didGetMoreFollowWave', {data:waves.feeds, more:parseInt(waves.more,10)});
 		};
 	
@@ -189,17 +242,38 @@ var waveManager = {
 
 /////////////////// UI variables ///////////////////////
 
-// wave tabbed bar
+// news wave button
 //
-var wavetb = Titanium.UI.createTabbedBar({
-	labels:['News', 'Friend', 'Follow'],
-	style:Titanium.UI.iPhone.SystemButtonStyle.BORDERED,
-	top:0,
-	height:40,
-	width:win.size.width,
-	index:0
+var newsbt = Titanium.UI.createButton({
+	title: 'News',
+	top: 5,
+	height: 30,
+	width: 100,
+	left: 5
 });
-win.add(wavetb);
+win.add(newsbt);
+
+// friend wave button
+//
+var friendbt = Titanium.UI.createButton({
+	title: 'Friend',
+	top: 5,
+	height: 30,
+	width: 100,
+	left: 110
+});
+win.add(friendbt);
+
+// follow wave button
+//
+var followbt = Titanium.UI.createButton({
+	title: 'Follow',
+	top: 5,
+	height: 30,
+	width: 100,
+	right: 5
+});
+win.add(followbt);
 
 // wave table view
 //
@@ -215,24 +289,28 @@ win.add(wavetv);
 // event listener 
 //////////////////////////////////////////////////////////////////////////////////
 
-// wave tabbed bar listener
+// news wave button listener
 //
-wavetb.addEventListener('click', function()
+newsbt.addEventListener('click', function ()
 {
-	switch (wavetb.index)
-	{
-		case 0:
-			waveManager.getNewsWave();
-			break;
-			
-		case 1:
-			waveManager.getFriendWave();
-			break;
-			
-		case 2:
-			waveManager.getFollowWave(currentUser.getUsername());
-			break;
-	}
+	selected = 'news';
+	waveManager.getNewsWave();
+});
+
+// friend wave button listener
+//
+friendbt.addEventListener('click', function ()
+{
+	selected = 'friend';
+	waveManager.getFriendWave();
+});
+
+// follow wave button listener
+//
+followbt.addEventListener('click', function ()
+{
+	selected = 'follow';
+	waveManager.getFollowWave(currentUser.getUsername());
 });
 
 // wave table view listener
@@ -583,6 +661,7 @@ Ti.App.addEventListener('didGetMoreFollowWave', function(e)
 	
 	wavetv.setData(rows);
 });
+
 
 //////////////////////////////////////////////////////////////////////////////////
 // actions

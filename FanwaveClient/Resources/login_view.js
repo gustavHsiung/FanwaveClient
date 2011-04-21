@@ -1,7 +1,7 @@
 // login view
 
-
 Ti.include("constant.js");
+Ti.include("utf8.js");
 
 //////////////////////////////////////////////////////////////////////////////////
 // functions 
@@ -15,7 +15,7 @@ function createHeaderForRequest(request)
 	request.setRequestHeader('username', CurrentUser.getUsername());
 	request.setRequestHeader('jid', CurrentUser.getJid());
 	request.setRequestHeader('country', 'tw');
-	request.setRequestHeader('timezone', '8');
+	request.setRequestHeader('timezone', '8');	
 };
 
 
@@ -37,13 +37,25 @@ var loginManager = {
 			switch(this.status)
 			{
 				case 200:
-					var parsedData = JSON.parse(this.responseData);
+				{
+					var parsedData;
+			
+					if (Ti.Platform.name == 'android') {
+    					parsedData = JSON.parse(utf8.decode(this.responseText));
+					}
+					else if(Ti.Platform.name == 'iPhone OS'){
+    					parsedData = JSON.parse(this.responseText);
+					}
+					
 					Ti.App.fireEvent('didLoginFanwave', {data: parsedData});
+				}
 					break;
 					
 				case 409:
+				{
 					var errorMsg = this.responseText;
 					Ti.API.info(errorMsg);
+				}
 					break;
 			}
 		};
@@ -60,8 +72,8 @@ var loginManager = {
 // create login window
 //
 var loginWin = Titanium.UI.createWindow({
-	height: app.win_height,
-	width: app.win_width
+	height: 480,
+	width: 320
 });
 	
 // background view
